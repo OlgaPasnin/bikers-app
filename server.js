@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost/bikersApp');
+mongoose.connect('mongodb://heroku_k7rh272q:fvpv0hga5sdt55h80e657lb47r@ds261969.mlab.com:61969/heroku_k7rh272q');
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
