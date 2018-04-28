@@ -310,6 +310,6 @@ app.delete('/dress/:id', function(req, res){
 });
 
 
-app.listen(3000, function(){
+app.listen(80, function(){
   console.log("Server listening");
 });
