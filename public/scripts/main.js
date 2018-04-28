@@ -1,5 +1,5 @@
 //Gets template markup from inside the script tag
-var template = Handlebars.compile(source); //Returns a function we'll use to create HTML chunks
+//var template = Handlebars.compile(source); //Returns a function we'll use to create HTML chunks
 
 var backendURL = "http://localhost:3000/dress/";
 
