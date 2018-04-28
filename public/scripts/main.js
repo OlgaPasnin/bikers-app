@@ -1,13 +1,8 @@
-var userList = document.getElementById('dress-list');
-var source   = document.getElementById("my-template").innerHTML;
-
 //Gets template markup from inside the script tag
 var template = Handlebars.compile(source); //Returns a function we'll use to create HTML chunks
-var submitBtn = document.getElementsByClassName("submit-button")[0];
-var deleteBtns = document.getElementsByClassName("delete-button");
-var editBtns = document.getElementsByClassName("edit-button");
+
 var backendURL = "http://localhost:3000/dress/";
-var dressForm = document.getElementById("dress-form")
+
 var clearForm = function(){dressForm.reset();}
 
 var isUpdate = false;
@@ -143,6 +138,6 @@ var ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
   }
 }
 
-var getAndShowDressesList = function(){ajaxCall("GET", backendURL, showDressesList);}
-
-getAndShowDressesList();
+// var getAndShowDressesList = function(){ajaxCall("GET", backendURL, showDressesList);}
+//
+// getAndShowDressesList();
