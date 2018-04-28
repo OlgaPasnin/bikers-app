@@ -20,35 +20,38 @@
 
     <div id="map"  style="height: 300px"></div>
 
-  
+
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ-FNRTlUAcKkaO2V3O2rVfIlQAHPL2lE&libraries=places"></script>
     <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
-        });
-      }
+    if(document.getElementById("status") != null){
 
-    var service;
-    var request = {
-      location: map,
-      name: "Slough",
-      radius: '500',
-      type: ['bar']
-      };
 
-      service = new google.maps.places.PlacesService(map);
-      service.nearbySearch(request, function callback(results, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-          for (var i = 0; i < results.length; i++) {
-            var place = results[i];
-            createMarker(results[i]);
-          }
+        var map;
+        function initMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 8
+          });
         }
-      });
 
+      var service;
+      var request = {
+        location: map,
+        name: "Slough",
+        radius: '500',
+        type: ['bar']
+        };
+
+        service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, function callback(results, status) {
+          if (status == google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i < results.length; i++) {
+              var place = results[i];
+              createMarker(results[i]);
+            }
+          }
+        });
+    }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
