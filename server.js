@@ -261,11 +261,12 @@ app.get('/fsq', function(req, res){
       v: '20180323',
       limit: 1
     }
-  }, function(err, res, body) {
-    if (err) {
-      console.error(err);
+  }, function(fsqerr, fsqres, fsqbody) {
+    if (fsqerr) {
+      console.error(fsqerr);
     } else {
-      console.log(body);
+      console.log(fsqbody);
+      res.status(200).json(fsqbody)
     }
   });
 })
