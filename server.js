@@ -13,6 +13,8 @@ const someOtherPlaintextPassword = 'not_bacon';
 
 const cookieSession = require('cookie-session')
 
+const PORT = process.env.PORT || 3000;
+
 app.use(cookieSession({
   name: 'session',
   keys: [uuidv1()],
@@ -310,6 +312,6 @@ app.delete('/dress/:id', function(req, res){
 });
 
 
-app.listen(3000, function(){
-  console.log("Server listening");
+server.listen(PORT, () => {
+  console.log(`Server running on ${PORT}/`);
 });
