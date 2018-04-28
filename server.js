@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors')
 const uuidv1 = require('uuid/v1');
+const request = require('request');
 const app = express();
 
 const bcrypt = require('bcrypt');
@@ -14,6 +15,8 @@ const someOtherPlaintextPassword = 'not_bacon';
 const cookieSession = require('cookie-session')
 
 const PORT = process.env.PORT || 3000;
+
+
 
 app.use(cookieSession({
   name: 'session',
@@ -202,31 +205,6 @@ app.get('/logout',function(req,res){
 
 });
 
-app.get('/login/:id?', function(req, res){
-  var queryObj = {};
-  if (req.params.id){
-    queryObj._id = req.params.id
-  }
-  User.find(queryObj).exec(function(err, user){
-    if (err) return res.status(500).send(err);
-    res.status(200).json(user);
-  });
-});
-
-
-//hashing a password before saving it to the database
-UserSchema.pre('save', function (next) {
-  var user = this;
-  bcrypt.hash(user.password, 10, function (err, hash){
-    if (err) {
-      return next(err);
-    }
-    user.password = hash;
-    next();
-  })
-});
-
-
 
 app.post('/createClan', function(req, res){
   if(req.session.username === "admin"){
@@ -250,6 +228,7 @@ app.post('/createClan', function(req, res){
   }
 });
 
+
 app.post('/checkin', function(req, res){
     if (req.body.locationName &&
       req.body.locationMembers ) {
@@ -270,55 +249,27 @@ app.post('/checkin', function(req, res){
 });
 
 
-
-
-
-
-
-//API GET REQUEST
-app.get('/dress/:id?', function(req, res){
-  var queryObj = {};
-  if (req.params.id){
-    queryObj._id = req.params.id
-  }
-  Dress.find(queryObj).exec(function(err, dress){
-    if (err) return res.status(500).send(err);
-    res.status(200).json(dress);
+app.get('/fsq', function(req, res){
+  request({
+    url: 'https://api.foursquare.com/v2/venues/explore',
+    method: 'GET',
+    qs: {
+      client_id: 'E1EWB51LTJFA2OST4JHASHHB2UNTLGL42I0MDQ5TUX3LY0RE',
+      client_secret: 'ZPMGI1WATUEUSV4OQBYIVFLLDRODBHKBLH2UJMXFESC2GK1R',
+      ll: '40.7243,-74.0018',
+      query: 'coffee',
+      v: '20180323',
+      limit: 1
+    }
+  }, function(err, res, body) {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(body);
+    }
   });
-});
+})
 
-//API POST REQUEST
-app.post('/dress', function(req, res){
-  console.log(req.body);
-  var dressData = req.body;
-  var newDress =  new Dress(dressData);
-  newDress.save(function(err, dress){
-    if (err) return res.status(500).send(err);
-    res.sendStatus(201);
-  });
-});
-
-//API PUT REQUEST
-app.put('/dress/:id', function(req, res){
-  var updateableDressId = req.params.id;
-  Dress.update({ _id: updateableDressId }, req.body, function (err, raw) {
-      if (err) return handleError(err);
-      if(raw.nModified === 0 ) return res.sendStatus(404);
-      console.log('The raw response from Mongo was ', raw);
-      return res.sendStatus(200);
-  });
-});
-
-//API DELETE REQUEST
-app.delete('/dress/:id', function(req, res){
-  console.log('Dress to be deleted: ', req.params.id);
-  var deletableDressId = req.params.id;
-  Dress.remove({_id: deletableDressId}, function(err, deletedDress){
-    if(err) return res.status(500).send(err);
-    res.status(204).json(deletedDress);
-  });
-
-});
 
 
 app.listen(PORT, () => {
