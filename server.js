@@ -312,6 +312,6 @@ app.delete('/dress/:id', function(req, res){
 });
 
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running on ${PORT}/`);
 });
