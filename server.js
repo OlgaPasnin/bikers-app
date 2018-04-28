@@ -157,6 +157,9 @@ app.post('/register', function(req, res){
         res.sendStatus(201);
     });
   }
+  else {
+    res.sendStatus(400)
+  }
 });
 
 app.post('/login', function(req, res){
@@ -187,6 +190,9 @@ app.post('/login', function(req, res){
           }
         })
     });
+  }
+  else {
+    res.sendStatus(400)
   }
 });
 
@@ -257,6 +263,9 @@ app.post('/checkin', function(req, res){
           if (err) return res.status(500).send(err);
           res.sendStatus(201);
       });
+    }
+    else {
+      res.sendStatus(400)
     }
 });
 
