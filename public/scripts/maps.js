@@ -12,6 +12,7 @@ let placeID;
 let place;
 
 searchMapsBtn.addEventListener('click', function (e) {
+  console.log("Click!")
   // Clear all previous markers
   if(marker){
     marker.setMap(null);
