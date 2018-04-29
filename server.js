@@ -187,6 +187,7 @@ app.post('/login', function(req, res){
           if (err) return res.status(500).send(err);
           if (isMatch){
             req.session.email = userData.email;
+            console.log("Created session entry: " + req.session.email);
             res.sendStatus(200);
           } else {
             return res.sendStatus(403);

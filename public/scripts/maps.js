@@ -11,33 +11,38 @@ let marker;
 let placeID;
 let place;
 
-searchMapsBtn.addEventListener('click', function (e) {
-  console.log("Click!")
-  // Clear all previous markers
-  if(marker){
-    marker.setMap(null);
-  }
-
-  queryLocation = document.getElementById('searchLocation').value;
-
-  let request = {
-    location: locationEngland,
-    query: queryLocation,
-    radius: radiusMaps,
-  };
-
-  let service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, function callback(results, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++) {
-        place = results[i];
-        initMap(searchResultsZoom, place.geometry.location);
-        createMarker(place);
-        placeID = place.place_id;
-      }
+let searchMapsBtnAddListener = () => {
+  console.log("Adding searchMapsBtnAddListener.");
+  searchMapsBtn.addEventListener('click', function (e) {
+    console.log("Click!")
+    // Clear all previous markers
+    if(marker){
+      marker.setMap(null);
     }
+
+    queryLocation = document.getElementById('searchLocation').value;
+
+    let request = {
+      location: locationEngland,
+      query: queryLocation,
+      radius: radiusMaps,
+    };
+
+    let service = new google.maps.places.PlacesService(map);
+    service.textSearch(request, function callback(results, status) {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+          place = results[i];
+          initMap(searchResultsZoom, place.geometry.location);
+          createMarker(place);
+          placeID = place.place_id;
+        }
+      }
+    });
   });
-});
+}
+
+searchMapsBtnAddListener();
 
 let createMarker = (place) => {
   let placeLoc = place.geometry.location;

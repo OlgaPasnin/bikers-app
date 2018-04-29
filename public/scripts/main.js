@@ -118,6 +118,7 @@ let showRegisterScreen = () => {
     $("#mainDiv").html(mainDivDefault);
     initMap(defaultZoom, locationEngland);
     setIsLoggedInAjaxCall();
+    searchMapsBtnAddListener();
   });
   loginSubmitBtn.addEventListener('click', function (e) {
     let loginRequestObj = {}
@@ -133,6 +134,7 @@ let showRegisterScreen = () => {
     console.log()
     $("#mainDiv").html(mainDivDefault);
     initMap(defaultZoom, locationEngland);
+    searchMapsBtnAddListener();
     setIsLoggedInAjaxCall();
   });
 }
