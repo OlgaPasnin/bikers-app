@@ -42,7 +42,7 @@ checkinBtn.addEventListener('click', function (e) {
 });
 
 let setIsLoggedInFlag = () => {
-  ajaxCall("GET", loginURL, loginCheckAjaxHandler());
+  ajaxCall("GET", loginURL, loginCheckAjaxHandler);
 }
 
 let updateLoginRegSection = () => {

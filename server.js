@@ -206,7 +206,6 @@ app.get('/login', function(req,res){
     return res.send(200).json(loginObj);
   }
   else{
-    loginObj.email = "";
     return res.send(200).json(loginObj)
   }
 })
