@@ -17,64 +17,27 @@
   </head>
 
   <body>
-
+    <div>
+      <input type="text" name="mapLocation" placeholder = "Search location" id="searchLocation"/>
+      <button type="button" id="searchMapsBtn" class="btn" >Search</button>
+    </div>
     <div id="map"  style="height: 300px"></div>
 
+    <div class="popup">
+      <script id="my-template" type="text/x-handlebars-template">
+          <div class="row">
+              <span>Check-in location: </span><span>{{placeName}}</span>
+          </div>
+      </script>
+      <button type="button">Check-in</button>
+    </div>
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ-FNRTlUAcKkaO2V3O2rVfIlQAHPL2lE&libraries=places"></script>
-    <script>
-
-      var infoWindow = new google.maps.InfoWindow();
-
-      function createMarker(place) {
-        var placeLoc = place.geometry.location;
-        var marker = new google.maps.Marker({
-          map: map,
-          position: place.geometry.location
-        });
-
-        google.maps.event.addListener(marker, 'click', function() {
-          infoWindow.setContent(place.name + "<br /><button>CheckIn</button>");
-          infoWindow.open(map, this);
-        });
-      }
-
-      var map;
-      var locationEngland = new google.maps.LatLng(52.467412, -1.648453);
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: locationEngland,
-          zoom: 6
-        });
-      }
-
-      initMap()
-
-      var service;
-
-
-      var request = {
-      location: locationEngland,
-      query: "The Herschel Arms",
-      radius: '100',
-      type: ['bar']
-      };
-
-      service = new google.maps.places.PlacesService(map);
-      service.textSearch(request, function callback(results, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-          for (var i = 0; i < results.length; i++) {
-            var place = results[i];
-            createMarker(place);
-          }
-        }
-      });
-
-    </script>
+    <script src="scripts/maps.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
-    <!--<script src="scripts/main.js"></script>-->
+    <script src="scripts/main.js"></script>
 
   </body>
 </html>

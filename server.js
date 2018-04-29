@@ -100,10 +100,10 @@ var LocationSchema = new Schema({
     unique: true,
     required: false
   },
-  locationClans: {
-    type: Array,
+  locationId: {
+    type: String,
     unique: true,
-    required: false
+    required: true
   }
 });
 
@@ -157,11 +157,11 @@ app.post('/register', function(req, res){
     //use schema.create to insert data into the db
     User.create(userData, function (err, user) {
         if (err) return res.status(500).send(err);
-        res.sendStatus(201);
+        return res.sendStatus(201);
     });
   }
   else {
-    res.sendStatus(400)
+    return res.sendStatus(400)
   }
 });
 
@@ -195,14 +195,13 @@ app.post('/login', function(req, res){
     });
   }
   else {
-    res.sendStatus(400)
+    return res.sendStatus(400)
   }
 });
 
 app.get('/logout',function(req,res){
     req.session = null;
-    res.sendStatus(200);
-
+    return res.sendStatus(200);
 });
 
 
@@ -220,7 +219,7 @@ app.post('/createClan', function(req, res){
       //use schema.create to insert data into the db
       Clan.create(clanData, function (err, clan) {
           if (err) return res.status(500).send(err);
-          res.sendStatus(201);
+          return res.sendStatus(201);
       });
     }
   }else {
@@ -230,48 +229,59 @@ app.post('/createClan', function(req, res){
 
 
 app.post('/checkin', function(req, res){
-    if (req.body.locationName &&
-      req.body.locationMembers ) {
+    if (req.body.locationId &&
+        req.body.locationName) {
 
       let locationData = {
+        locationId: req.body.locationId,
         locationName: req.body.locationName,
-        locationMembers: req.body.locationMembers,
+        locationMembers: []
       }
-      //use schema.create to insert data into the db
-      LocationName.create(locationData, function (err, clan) {
-          if (err) return res.status(500).send(err);
-          res.sendStatus(201);
+
+      let query = {};
+      query.locationId = locationData.locationId;
+
+      LocationName.findOne(query, function(err, location){
+        if (err) return res.status(500).send(err);
+        if (location) {
+          console.log("CHECKIN: Checking into an existing location.")
+          if (location.locationMembers.includes(req.session.email) ){
+            console.log("CHECKIN: User already checking in to this location.")
+            return res.sendStatus(208);
+          }
+          if (req.session.email){
+            location.locationMembers.push(req.session.email)
+            Location.update(location, function(err, updateRes){
+              if (err) return res.status(500).send(err);
+              return res.sendStatus(200);
+            })
+          } else {
+            console.log("CHECKIN: User not authenticated.")
+            return res.sendStatus(403);
+          }
+
+        } else {
+          console.log("CHECKIN: Creating new location and checking in.")
+          //use schema.create to insert data into the db
+          if (req.session.email){
+            locationData.locationMembers.push(req.session.email)
+            LocationName.create(locationData, function (err, clan) {
+                if (err) return res.status(500).send(err);
+                return res.sendStatus(201);
+            });
+          } else {
+            console.log("CHECKIN: User not authenticated.")
+            return res.sendStatus(403);
+          }
+        }
+
       });
     }
     else {
-      res.sendStatus(400)
+      console.log("CHECKIN: Wrong data received from client.")
+      return res.sendStatus(400)
     }
 });
-
-
-app.get('/fsq', function(req, res){
-  request({
-    url: 'https://api.foursquare.com/v2/venues/explore',
-    method: 'GET',
-    qs: {
-      client_id: 'E1EWB51LTJFA2OST4JHASHHB2UNTLGL42I0MDQ5TUX3LY0RE',
-      client_secret: 'ZPMGI1WATUEUSV4OQBYIVFLLDRODBHKBLH2UJMXFESC2GK1R',
-      ll: '40.7243,-74.0018',
-      query: 'coffee',
-      v: '20180323',
-      limit: 1
-    }
-  }, function(fsqerr, fsqres, fsqbody) {
-    if (fsqerr) {
-      console.error(fsqerr);
-    } else {
-      console.log(fsqbody);
-      res.status(200).json(fsqbody)
-    }
-  });
-})
-
-
 
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}/`);
