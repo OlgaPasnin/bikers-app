@@ -1,18 +1,59 @@
 
-let handleBarSource;
-
-handleBarSource = document.getElementById("my-template").innerHTML;
-
-
-let context = {
-  placeName: ""
-}
-
 let backendURL = "https://bikers-app.herokuapp.com/";
+let checkinURL = backendURL + "checkin";
+let loginURL = backendURL + "login"
+let handleBarSource = document.getElementById("my-template").innerHTML;
+let checkinForm = document.getElementById("popup").innerHTML;
+const logoutBtn = '<button id="logoutBtn">Logout</button>'
+const registerBtn = '<button id="registerBtn">Logout</button>'
+let handleBarContext = {
+  placeName: "empty"
+}
+const checkinBtn = document.getElementById("checkinBtn");
+let isLoggedIn = false;
+let loggedInEmail = "";
+
 
 // var clearForm = function(){dressForm.reset();}
 
 let isUpdate = false;
+
+
+let checkingBtnAjaxHandler = () => {
+  console.log("CHECKING AJAX: Done");
+}
+
+let loginCheckAjaxHandler = (reponseObj) => {
+  if(reponseObj){
+    if (reponseObj.email){
+      loggedInEmail = reponseObj.email
+      isLoggedIn = true;
+    }
+    updateLoginRegSection();
+  }
+}
+
+checkinBtn.addEventListener('click', function (e) {
+  let checkinData = {
+    locationId: placeID,
+    locationName: place.name
+  };
+  ajaxCall("POST", checkinURL, checkingBtnAjaxHandler, checkinData)
+});
+
+let setIsLoggedInFlag = () => {
+  ajaxCall("GET", loginURL, loginCheckAjaxHandler());
+}
+
+let updateLoginRegSection = () => {
+  if (isLoggedIn){
+    const logoutHTML = "<span>" + loggedInEmail + "</span>" + logoutBtn;
+    $("#login-reg").html(logoutHTML)
+  }
+  else {
+    $("#login-reg").html(registerBtn)
+  }
+}
 
  // <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT-SQ5pAgCeqlmi730m14WdZge3Sw8Yrc&callback=initMap" async defer></script>
 // submitBtn.addEventListener('click', function (e) {
@@ -148,7 +189,7 @@ var ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
 
   if (ajaxMethod == "POST" || ajaxMethod == "PUT" ){
     xmlhttp.setRequestHeader("Content-Type", "application/json");
-    xmlhttp.send(ajaxData);
+    xmlhttp.send(JSON.stringify(ajaxData));
   }
   else {
     xmlhttp.send();
@@ -158,3 +199,5 @@ var ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
 // var getAndShowDressesList = function(){ajaxCall("GET", backendURL, showDressesList);}
 //
 // getAndShowDressesList();
+
+setIsLoggedInFlag();

@@ -17,26 +17,30 @@
   </head>
 
   <body>
+    <div id="login-reg">
+    </div>
     <div>
       <input type="text" name="mapLocation" placeholder = "Search location" id="searchLocation"/>
       <button type="button" id="searchMapsBtn" class="btn" >Search</button>
     </div>
     <div id="map"  style="height: 300px"></div>
 
-    <div class="popup">
-      <script id="my-template" type="text/x-handlebars-template">
-          <div class="row">
-              <span>Check-in location: </span><span>{{placeName}}</span>
-          </div>
-      </script>
-      <button type="button">Check-in</button>
+    <div>
+      <span>Check-in location: </span>
+      <span class="popup" id="popup">
+        <script id="my-template" type="text/x-handlebars-template">
+          {{placeName}}
+        </script>
+      </span>
+      <div>
+        <button type="button" id="checkinBtn">Check-in</button>
+      </div>
     </div>
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ-FNRTlUAcKkaO2V3O2rVfIlQAHPL2lE&libraries=places"></script>
-    <script src="scripts/maps.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <script src="scripts/maps.js"></script>
     <script src="scripts/main.js"></script>
 
   </body>

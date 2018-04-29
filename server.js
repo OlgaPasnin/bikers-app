@@ -199,6 +199,18 @@ app.post('/login', function(req, res){
   }
 });
 
+app.get('/login', function(req,res){
+  let loginObj = {};
+  if(req.session.email){
+    loginObj.email = req.session.email;
+    return res.send(200).json(loginObj);
+  }
+  else{
+    loginObj.email = "";
+    return res.send(200).json(loginObj)
+  }
+})
+
 app.get('/logout',function(req,res){
     req.session = null;
     return res.sendStatus(200);
