@@ -261,7 +261,7 @@ app.post('/checkin', function(req, res){
         if (location) {
           console.log("CHECKIN: Checking into an existing location.")
           if (location.locationMembers.includes(req.session.email) ){
-            console.log("CHECKIN: User already checking in to this location.")
+            console.log("CHECKIN: User already checked in to this location.")
             return res.sendStatus(208);
           }
           if (req.session.email){
