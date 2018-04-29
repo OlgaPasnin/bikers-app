@@ -1,5 +1,5 @@
 
-const searchMapsBtn = document.getElementById("searchMapsBtn");
+let searchMapsBtn;
 const locationEngland = new google.maps.LatLng(52.467412, -1.648453);
 let queryLocation = "";
 const radiusMaps = "100";
@@ -11,9 +11,8 @@ let marker;
 let placeID;
 let place;
 
-let searchMapsBtnAddListener = () => {
-  console.log("Adding searchMapsBtnAddListener.");
-  searchMapsBtn.addEventListener('click', function (e) {
+let searchMapsBtnEventHandler = () => {
+
     console.log("Click!")
     // Clear all previous markers
     if(marker){
@@ -39,7 +38,19 @@ let searchMapsBtnAddListener = () => {
         }
       }
     });
-  });
+
+}
+
+let searchMapsBtnAddListener = () => {
+  console.log("Adding searchMapsBtn Listener.");
+  searchMapsBtn  = document.getElementById("searchMapsBtn");
+  searchMapsBtn.addEventListener('click', searchMapsBtnEventHandler);
+}
+
+let searchMapsBtnRemoveListener = () => {
+  console.log("Remove searchMapsBtn Listener.");
+  searchMapsBtn  = document.getElementById("searchMapsBtn");
+  searchMapsBtn.removeEventListener('click', searchMapsBtnEventHandler);
 }
 
 searchMapsBtnAddListener();

@@ -9,7 +9,7 @@ let checkinForm = document.getElementById("popup").innerHTML;
 let handleBarRegisterSource = document.getElementById("reg-template").innerHTML;
 let mainDiv = document.getElementById("mainDiv").innerHTML;
 
-const checkinBtn = document.getElementById("checkinBtn");
+let checkinBtn;
 let registerBtn;
 let regSubmitBtn;
 let loginSubmitBtn;
@@ -61,14 +61,16 @@ let loginAjaxHandler = (responseObj) => {
   console.log(loginObj);
 }
 
+let addCheckinListener = () => {
+  checkinBtn.addEventListener('click', function (e) {
+    let checkinData = {
+      locationId: placeID,
+      locationName: place.name
+    };
+    ajaxCall("POST", checkinURL, checkingBtnAjaxHandler, checkinData)
+  });
+}
 
-checkinBtn.addEventListener('click', function (e) {
-  let checkinData = {
-    locationId: placeID,
-    locationName: place.name
-  };
-  ajaxCall("POST", checkinURL, checkingBtnAjaxHandler, checkinData)
-});
 
 let setIsLoggedInAjaxCall = () => {
   ajaxCall("GET", loginURL, loginCheckAjaxHandler);
@@ -103,6 +105,7 @@ let showRegisterScreen = () => {
   $("#mainDiv").html(handleBarRegisterHtml);
   regSubmitBtn = document.getElementById("regSubmitBtn");
   loginSubmitBtn = document.getElementById("loginSubmitBtn");
+
   regSubmitBtn.addEventListener('click', function (e) {
     let registerRequestObj = {}
     let regInput = document.getElementsByClassName("regInput");
@@ -114,12 +117,9 @@ let showRegisterScreen = () => {
     console.log("User registration object is: ");
     console.log(registerRequestObj);
     registerAjaxCall(registerRequestObj);
-    console.log()
-    $("#mainDiv").html(mainDivDefault);
-    initMap(defaultZoom, locationEngland);
-    setIsLoggedInAjaxCall();
-    searchMapsBtnAddListener();
+    reinitializeMainPage();
   });
+
   loginSubmitBtn.addEventListener('click', function (e) {
     let loginRequestObj = {}
     let loginInput = document.getElementsByClassName("loginInput");
@@ -131,17 +131,23 @@ let showRegisterScreen = () => {
     console.log("User login object is: ");
     console.log(loginRequestObj);
     loginAjaxCall(loginRequestObj);
-    console.log()
-    $("#mainDiv").html(mainDivDefault);
-    initMap(defaultZoom, locationEngland);
-    searchMapsBtnAddListener();
-    setIsLoggedInAjaxCall();
+    reinitializeMainPage();
   });
+
 }
 
+let reinitializeMainPage = () => {
+  $("#mainDiv").html(mainDivDefault);
+  initMap(defaultZoom, locationEngland);
+  checkinBtn = document.getElementById("checkinBtn");
+  addCheckinListener();
+  searchMapsBtnRemoveListener();
+  searchMapsBtnAddListener();
+  setIsLoggedInAjaxCall();
+}
 
-var ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
-  var xmlhttp = new XMLHttpRequest();
+let ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
+  let xmlhttp = new XMLHttpRequest();
 
   xmlhttp.onreadystatechange = function() {
     //console.log('state changed', xmlhttp.readyState);

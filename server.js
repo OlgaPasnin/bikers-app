@@ -245,6 +245,8 @@ app.post('/checkin', function(req, res){
     if (req.body.locationId &&
         req.body.locationName) {
 
+    console.log("Received CHECKIN request from user: " + req.session.email);
+
       let locationData = {
         locationId: req.body.locationId,
         locationName: req.body.locationName,
