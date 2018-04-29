@@ -2,14 +2,25 @@
 let backendURL = "https://bikers-app.herokuapp.com/";
 let checkinURL = backendURL + "checkin";
 let loginURL = backendURL + "login"
+let registerURL = backendURL + "register"
+
 let handleBarSource = document.getElementById("my-template").innerHTML;
 let checkinForm = document.getElementById("popup").innerHTML;
-const logoutBtn = '<button id="logoutBtn">Logout</button>'
-const registerBtn = '<button id="registerBtn">Logout</button>'
+let handleBarRegisterSource = document.getElementById("reg-template").innerHTML;
+let mainDiv = document.getElementById("mainDiv").innerHTML;
+
+const checkinBtn = document.getElementById("checkinBtn");
+let registerBtn;
+let regSubmitBtn;
+let loginSubmitBtn;
+
+const mainDivDefault = mainDiv;
+const logoutBtnHTML = '<button id="logoutBtn">Logout</button>'
+const registerBtnHTML = '<button id="registerBtn">Login / Register</button>'
 let handleBarContext = {
   placeName: "empty"
 }
-const checkinBtn = document.getElementById("checkinBtn");
+
 let isLoggedIn = false;
 let loggedInEmail = "";
 
@@ -24,16 +35,32 @@ let checkingBtnAjaxHandler = () => {
 }
 
 let loginCheckAjaxHandler = (responseObj) => {
+  let loginObj = JSON.parse(responseObj)
   console.log("loginCheckAjaxHandler: ");
-  console.log(responseObj);
-  if(responseObj){
-    if (responseObj.email){
-      loggedInEmail = responseObj.email
+  console.log(loginObj);
+  if(loginObj){
+    if (loginObj.email){
+      loggedInEmail = loginObj.email
       isLoggedIn = true;
     }
     updateLoginRegSection();
   }
 }
+
+let regsiterAjaxHandler = (responseObj) => {
+  //let registerObj = JSON.parse(responseObj)
+  let registerObj = responseObj;
+  console.log("regsiterAjaxHandler: ");
+  console.log(registerObj);
+}
+
+let loginAjaxHandler = (responseObj) => {
+  //let registerObj = JSON.parse(responseObj)
+  let loginObj = responseObj;
+  console.log("loginAjaxHandler: ");
+  console.log(loginObj);
+}
+
 
 checkinBtn.addEventListener('click', function (e) {
   let checkinData = {
@@ -43,130 +70,72 @@ checkinBtn.addEventListener('click', function (e) {
   ajaxCall("POST", checkinURL, checkingBtnAjaxHandler, checkinData)
 });
 
-let setIsLoggedInFlag = () => {
+let setIsLoggedInAjaxCall = () => {
   ajaxCall("GET", loginURL, loginCheckAjaxHandler);
 }
 
+let registerAjaxCall = (regRequestObj) => {
+  ajaxCall("POST", registerURL, regsiterAjaxHandler, regRequestObj);
+}
+
+let loginAjaxCall = (loginRequestObj) => {
+  ajaxCall("POST", loginURL, loginAjaxHandler, loginRequestObj);
+}
+
 let updateLoginRegSection = () => {
+  console.log("isLoggedIn: " + isLoggedIn);
   if (isLoggedIn){
-    const logoutHTML = "<span>" + loggedInEmail + "</span>" + logoutBtn;
-    $("#login-reg").html(logoutHTML)
+    const logoutHTML = "<span>" + loggedInEmail + "</span>" + logoutBtnHTML;
+    $("#login-reg").html(logoutHTML);
   }
   else {
-    $("#login-reg").html(registerBtn)
+    $("#login-reg").html(registerBtnHTML);
+    registerBtn = document.getElementById("registerBtn");
+    registerBtn.addEventListener('click', function (e) {
+      showRegisterScreen();
+    });
   }
 }
 
- // <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT-SQ5pAgCeqlmi730m14WdZge3Sw8Yrc&callback=initMap" async defer></script>
-// submitBtn.addEventListener('click', function (e) {
-//   e.preventDefault();
-//   var formData = new FormData(document.querySelector("form"));
-//
-//   let jsonObject = {};
-//
-//   for (const [key, value]  of formData.entries()) {
-//       jsonObject[key] = value;
-//   }
-//
-// console.log(jsonObject);
-//
-//   if(isUpdate){
-//     console.log(e)
-//     var editID = e.srcElement.form.classList[0];
-//     ajaxCall(
-//       "PUT",
-//       backendURL+editID,
-//       function(){
-//         console.log("UPDATE successful!")
-//         getAndShowDressesList();
-//       },
-//       JSON.stringify(jsonObject)
-//     )
-//   }else {
-//     ajaxCall(
-//       "POST",
-//       backendURL,
-//       function(){
-//         console.log("POST successful!")
-//         getAndShowDressesList();
-//       },
-//       JSON.stringify(jsonObject)
-//     )
-//   }
-// });
-
-
-// var showDressesList = function(ajaxResponseObject){
-//   var dress = JSON.parse(ajaxResponseObject);
-//
-//   userList.innerHTML = ''
-//
-//   dress.forEach(function(dress){
-//     var html = template(dress);
-//     //console.log('html', html);
-//     userList.innerHTML += html;
-//   });
-//
-//   for(var i = 0; i < deleteBtns.length; i++){
-//     //console.log(deleteBtns[i])
-//     deleteBtns[i].addEventListener('click', function(e){
-//       var deleteID = this.className.split(" ").splice(-1)[0];
-//       ajaxCall("DELETE", backendURL+deleteID,
-//           function(){
-//             console.log("DELETE successful!")
-//             getAndShowDressesList();
-//           },
-//       )
-//     });
-//   };
-
-//   for(var i = 0; i < editBtns.length; i++){
-//     editBtns[i].addEventListener('click', function(e){
-//       console.log(e.srcElement.classList[4])
-//       var editID = e.srcElement.classList[4]
-//
-//       console.log("Dress ID is " + editID)
-//
-//       ajaxCall("GET", backendURL+editID, function(dressObject){
-//         var dress = JSON.parse(dressObject)[0];
-//         console.log("Obtained dress " + dress._id)
-//         updateFormToggle(dress);
-//       })
-//
-//     });
-//   };
-//
-// }
-
-// var updateFormToggle = function(dressObj){
-//     var changeWord = document.getElementById("formHeader");
-//     if (changeWord.innerHTML == "Add"){
-//       console.log("Entering into edit mode for " + dressObj._id)
-//       clearForm();
-//       isUpdate = true;
-//       changeWord.innerHTML = "Update";
-//       document.getElementById("style").value = dressObj.style
-//       document.getElementById("size").value = dressObj.size
-//       document.getElementById("color").value = dressObj.color
-//       dressForm.className = dressObj._id
-//     }else{
-//       console.log("Exiting Edit mode for " + dressObj._id)
-//       clearForm();
-//       isUpdate = false;
-//       changeWord.innerHTML = "Add"
-//     }
-// }
-
-
-// setInterval(function(){
-//   if(place){
-//     console.log("Identified location is: " + placeID + "; --  Which is: " + place.name);
-//   }
-//   else {
-//     console.log("Place is undefined yet.")
-//   }
-// }
-// ,5000)
+let showRegisterScreen = () => {
+  let handleBarsRegisterTemplate = Handlebars.compile(handleBarRegisterSource);
+  let handleBarRegisterHtml = handleBarsRegisterTemplate(handleBarsRegisterTemplate);
+  $("#mainDiv").html(handleBarRegisterHtml);
+  regSubmitBtn = document.getElementById("regSubmitBtn");
+  loginSubmitBtn = document.getElementById("loginSubmitBtn");
+  regSubmitBtn.addEventListener('click', function (e) {
+    let registerRequestObj = {}
+    let regInput = document.getElementsByClassName("regInput");
+    console.log("Input elemnts are: ");
+    console.log(regInput);
+    [].forEach.call(regInput, function(item){
+      registerRequestObj[item.name] = item.value;
+    });
+    console.log("User registration object is: ");
+    console.log(registerRequestObj);
+    registerAjaxCall(registerRequestObj);
+    console.log()
+    $("#mainDiv").html(mainDivDefault);
+    initMap(defaultZoom, locationEngland);
+    setIsLoggedInAjaxCall();
+  });
+  loginSubmitBtn.addEventListener('click', function (e) {
+    let loginRequestObj = {}
+    let loginInput = document.getElementsByClassName("loginInput");
+    console.log("Input elemnts are: ");
+    console.log(loginInput);
+    [].forEach.call(loginInput, function(item){
+      loginRequestObj[item.name] = item.value;
+    });
+    console.log("User login object is: ");
+    console.log(loginRequestObj);
+    loginAjaxCall(loginRequestObj);
+    console.log()
+    $("#mainDiv").html(mainDivDefault);
+    initMap(defaultZoom, locationEngland);
+    setIsLoggedInAjaxCall();
+  });
+}
 
 
 var ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
@@ -179,10 +148,12 @@ var ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
             ajaxHandlerFunction(xmlhttp.responseText);
          }
          else if (xmlhttp.status === 404) {
-            alert('The resource was not found');
+            // alert('The resource was not found');
+            $("#errorPanel").html("The resource was not found");
          }
          else {
-             alert('Error: Call to server failed with code: ' + xmlhttp.status);
+             //alert('Error: Call to server failed with code: ' + xmlhttp.status);
+             $("#errorPanel").html("Error: Call to server failed with code: " + xmlhttp.status);
          }
       }
   };
@@ -198,8 +169,4 @@ var ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
   }
 }
 
-// var getAndShowDressesList = function(){ajaxCall("GET", backendURL, showDressesList);}
-//
-// getAndShowDressesList();
-
-setIsLoggedInFlag();
+setIsLoggedInAjaxCall();

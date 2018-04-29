@@ -48,13 +48,7 @@ let createMarker = (place) => {
   google.maps.event.addListener(marker, 'click', function() {
     infoWindow.setContent(place.name);
     handleBarContext.placeName = place.name
-    console.log("Context to compile is:")
-    console.log(handleBarContext);
-    console.log("Source to compile is:")
-    console.log(handleBarSource);
     let handleBarstemplate = Handlebars.compile(handleBarSource);
-    console.log("Template to compile is:")
-    console.log(handleBarstemplate);
     let handleBarHtml = handleBarstemplate(handleBarContext);
     $("#popup").html(handleBarHtml);
     infoWindow.open(map, this);

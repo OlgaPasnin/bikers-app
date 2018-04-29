@@ -203,7 +203,7 @@ app.get('/login', function(req,res){
   let loginObj = {};
   if(req.session.email){
     loginObj.email = req.session.email;
-    res.send(200).json(loginObj);
+    res.json(loginObj);
   }
   else{
     // loginObj.email = "empty"

@@ -17,6 +17,8 @@
   </head>
 
   <body>
+    <div id="errorPanel">
+    </div>
     <div id="mainDiv">
       <div id="login-reg">
       </div>
@@ -38,6 +40,21 @@
         </div>
       </div>
     </div>
+    <script id="reg-template" type="text/x-handlebars-template">
+      <div>
+        <input class = "loginInput" type="text" name="email" placeholder = "E-Mail" id="loginEmail"/>
+        <input class = "loginInput" type="password" name="password" placeholder = "Password" id="loginPassword"/>
+        <button type="button" id="loginSubmitBtn" class="btn" >Login</button>
+      </div>
+      <div>
+        <input class = "regInput" type="text" name="email" placeholder = "E-Mail" id="regEmail"/>
+        <input class = "regInput" type="text" name="username" placeholder = "Username" id="regUsername"/>
+        <input class = "regInput" type="password" name="password" placeholder = "Password" id="regPassword"/>
+        <input class = "regInput" type="text" name="clanName" placeholder = "Clan Name" id="regClanName"/>
+        <input class = "regInput" type="text" name="motorbikeType" placeholder = "Motorbike Type" id="regMotorbikeType"/>
+        <button type="button" id="regSubmitBtn" class="btn" >Register</button>
+    </div>
+    </script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ-FNRTlUAcKkaO2V3O2rVfIlQAHPL2lE&libraries=places"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
