@@ -207,7 +207,7 @@ app.get('/login', function(req,res){
   }
   else{
     loginObj.email = "empty"
-    res.send(200).json(loginObj)
+    res.json(loginObj)
   }
 })
 
