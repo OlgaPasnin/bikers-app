@@ -62,6 +62,7 @@ let loginAjaxHandler = (responseObj) => {
 }
 
 let addCheckinListener = () => {
+  checkinBtn = document.getElementById("checkinBtn");
   checkinBtn.addEventListener('click', function (e) {
     let checkinData = {
       locationId: placeID,
@@ -139,7 +140,6 @@ let showRegisterScreen = () => {
 let reinitializeMainPage = () => {
   $("#mainDiv").html(mainDivDefault);
   initMap(defaultZoom, locationEngland);
-  checkinBtn = document.getElementById("checkinBtn");
   addCheckinListener();
   searchMapsBtnRemoveListener();
   searchMapsBtnAddListener();
