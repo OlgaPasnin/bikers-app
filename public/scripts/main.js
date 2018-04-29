@@ -23,10 +23,12 @@ let checkingBtnAjaxHandler = () => {
   console.log("CHECKING AJAX: Done");
 }
 
-let loginCheckAjaxHandler = (reponseObj) => {
-  if(reponseObj){
-    if (reponseObj.email){
-      loggedInEmail = reponseObj.email
+let loginCheckAjaxHandler = (responseObj) => {
+  console.log("loginCheckAjaxHandler: ")
+  console.log(responseObj)
+  if(responseObj){
+    if (responseObj.email){
+      loggedInEmail = responseObj.email
       isLoggedIn = true;
     }
     updateLoginRegSection();
