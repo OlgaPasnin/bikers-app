@@ -2,6 +2,7 @@
 let backendURL = "https://bikers-app.herokuapp.com/";
 let checkinURL = backendURL + "checkin";
 let loginURL = backendURL + "login"
+let logoutURL = backendURL + "logout"
 let registerURL = backendURL + "register"
 
 let handleBarSource = document.getElementById("my-template").innerHTML;
@@ -13,6 +14,7 @@ let checkinBtn;
 let registerBtn;
 let regSubmitBtn;
 let loginSubmitBtn;
+let logoutBtn;
 
 const mainDivDefault = mainDiv;
 const logoutBtnHTML = '<button id="logoutBtn">Logout</button>'
@@ -61,6 +63,14 @@ let loginAjaxHandler = (responseObj) => {
   console.log(loginObj);
 }
 
+let logoutAjaxHandler = (responseObj) => {
+  //let registerObj = JSON.parse(responseObj)
+  let logoutObj = responseObj;
+  console.log("logoutAjaxHandler: ");
+  console.log(logoutObj);
+}
+
+
 let addCheckinListener = () => {
   checkinBtn = document.getElementById("checkinBtn");
   checkinBtn.addEventListener('click', function (e) {
@@ -69,6 +79,13 @@ let addCheckinListener = () => {
       locationName: place.name
     };
     ajaxCall("POST", checkinURL, checkingBtnAjaxHandler, checkinData)
+  });
+}
+
+let addLogoutListener = () => {
+  logoutBtn = document.getElementById("logoutBtn");
+  logoutBtn.addEventListener('click', function (e) {
+    ajaxCall("GET", logoutURL, logoutAjaxHandler)
   });
 }
 
@@ -90,6 +107,7 @@ let updateLoginRegSection = () => {
   if (isLoggedIn){
     const logoutHTML = "<span>" + loggedInEmail + "</span>" + logoutBtnHTML;
     $("#login-reg").html(logoutHTML);
+    addLogoutListener();
   }
   else {
     $("#login-reg").html(registerBtnHTML);
