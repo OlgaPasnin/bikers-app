@@ -24,8 +24,8 @@ let checkingBtnAjaxHandler = () => {
 }
 
 let loginCheckAjaxHandler = (responseObj) => {
-  console.log("loginCheckAjaxHandler: ")
-  console.log(responseObj)
+  console.log("loginCheckAjaxHandler: ");
+  console.log(JSON.parse(responseObj[0]));
   if(responseObj){
     if (responseObj.email){
       loggedInEmail = responseObj.email
