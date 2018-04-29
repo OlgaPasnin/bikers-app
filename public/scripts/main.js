@@ -177,4 +177,5 @@ let ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
   }
 }
 
+addCheckinListener();
 setIsLoggedInAjaxCall();
