@@ -278,10 +278,11 @@ app.post('/checkin', function(req, res){
             location.locationMembers.push(req.session.email)
             console.log("Checkin existing location object: ");
             console.log(location);
-            Location.update(location, function(err, updateRes){
-              if (err) return res.status(500).send(err);
-              return res.sendStatus(200);
-            })
+            // Location.update(location, function(err, updateRes){
+            //   if (err) return res.status(500).send(err);
+            //   return res.sendStatus(200);
+            // })
+            location.save();
           } else {
             console.log("CHECKIN: User not authenticated.")
             return res.sendStatus(403);
