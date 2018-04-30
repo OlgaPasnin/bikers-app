@@ -15,6 +15,7 @@ const someOtherPlaintextPassword = 'not_bacon';
 const cookieSession = require('cookie-session')
 
 const PORT = process.env.PORT || 3000;
+const SALT_WORK_FACTOR = 10;
 
 
 app.use(cookieSession({
