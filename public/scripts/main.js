@@ -79,6 +79,8 @@ let addCheckinListener = () => {
       locationId: placeID,
       locationName: place.name
     };
+    console.log("Location to checkin:");
+    console.log(checkinData);
     ajaxCall("POST", checkinURL, checkingBtnAjaxHandler, checkinData)
   });
 }
