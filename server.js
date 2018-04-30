@@ -17,7 +17,6 @@ const cookieSession = require('cookie-session')
 const PORT = process.env.PORT || 3000;
 
 
-
 app.use(cookieSession({
   name: 'session',
   keys: [uuidv1()],
@@ -149,7 +148,7 @@ app.post('/register', function(req, res){
     req.body.clanName &&
     req.body.motorbikeType) {
 
-    let userData = {
+    var userData = {
       email: req.body.email,
       username: req.body.username,
       password: req.body.password,
@@ -175,12 +174,12 @@ app.post('/login', function(req, res){
   if (
     req.body.email &&
     req.body.password) {
-    let userData = {
+    var userData = {
       email: req.body.email,
       password: req.body.password
     }
 
-    let queryObject = {};
+    var queryObject = {};
     queryObject.email = userData.email
     //use schema.create to insert data into the db
     User.findOne(queryObject).exec(function (err, user) {
@@ -203,7 +202,7 @@ app.post('/login', function(req, res){
 });
 
 app.get('/login', function(req,res){
-  let loginObj = {};
+  var loginObj = {};
   console.log("Login session checking  for user: " + req.session.email);
   if(req.session.email){
     loginObj.email = req.session.email;
@@ -228,7 +227,7 @@ app.post('/createClan', function(req, res){
       req.body.clanImage &&
       req.body.clanMembers) {
 
-      let clanData = {
+      var clanData = {
         clanName: req.body.clanName,
         clanImage: req.body.clanImage,
         clanMembers: req.body.clanMembers
@@ -251,13 +250,13 @@ app.post('/checkin', function(req, res){
 
     console.log("Received CHECKIN request from user: " + req.session.email);
 
-      let locationData = {
+      var locationData = {
         locationId: req.body.locationId,
         locationName: req.body.locationName,
         locationMembers: []
       }
 
-      let query = {};
+      var query = {};
       query.locationId = locationData.locationId;
 
       LocationName.findOne(query, function(err, location){
