@@ -276,6 +276,8 @@ app.post('/checkin', function(req, res){
           }
           if (req.session.email){
             location.locationMembers.push(req.session.email)
+            console.log("Checkin existing location object: ");
+            console.log(location);
             Location.update(location, function(err, updateRes){
               if (err) return res.status(500).send(err);
               return res.sendStatus(200);
