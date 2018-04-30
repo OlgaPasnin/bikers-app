@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors')
 const uuidv1 = require('uuid/v1');
-const request = require('request');
+
 const app = express();
 
 const bcrypt = require('bcrypt');
@@ -34,6 +34,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 mongoose.connect('mongodb://heroku_k7rh272q:fvpv0hga5sdt55h80e657lb47r@ds261969.mlab.com:61969/heroku_k7rh272q');
+// mongoose.connect('mongodb://localhost:27017/bikersApp')
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -106,9 +107,9 @@ var LocationSchema = new Schema({
   }
 });
 
-UserSchema.pre('create', function(next) {
-    console.log("Generating password hash for user: " + user.email);
+UserSchema.pre('validate', function(next) {
     var user = this;
+    console.log("Generating password hash for user: " + user.email);
 
     // generate a salt
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
@@ -148,17 +149,20 @@ app.post('/register', function(req, res){
     req.body.clanName &&
     req.body.motorbikeType) {
 
-    var userData = {
+    let userData = {
       email: req.body.email,
       username: req.body.username,
       password: req.body.password,
       clanName: req.body.clanName,
       motorbikeType: req.body.motorbikeType
     }
+
+    console.log("Submitted password is " + userData.password)
     //use schema.create to insert data into the db
     User.create(userData, function (err, user) {
         if (err) return res.status(500).send(err);
-        return res.sendStatus(201);
+        console.log("Saved password is " + user.password)
+        res.sendStatus(201);
     });
   }
   else {
@@ -174,12 +178,12 @@ app.post('/login', function(req, res){
   if (
     req.body.email &&
     req.body.password) {
-    var userData = {
+    let userData = {
       email: req.body.email,
       password: req.body.password
     }
 
-    var queryObject = {};
+    let queryObject = {};
     queryObject.email = userData.email
     //use schema.create to insert data into the db
     User.findOne(queryObject).exec(function (err, user) {
