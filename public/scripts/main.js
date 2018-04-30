@@ -152,6 +152,7 @@ let showRegisterScreen = () => {
     loginAjaxCall(loginRequestObj);
     reinitializeMainPage();
     location.reload();
+    setIsLoggedInAjaxCall();
   });
 
 }
