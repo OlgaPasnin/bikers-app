@@ -55,6 +55,7 @@ let regsiterAjaxHandler = (responseObj) => {
   let registerObj = responseObj;
   console.log("regsiterAjaxHandler: ");
   console.log(registerObj);
+  location.reload();
 }
 
 let loginAjaxHandler = (responseObj) => {
@@ -62,6 +63,7 @@ let loginAjaxHandler = (responseObj) => {
   let loginObj = responseObj;
   console.log("loginAjaxHandler: ");
   console.log(loginObj);
+  location.reload();
 }
 
 let logoutAjaxHandler = (responseObj) => {
@@ -69,6 +71,7 @@ let logoutAjaxHandler = (responseObj) => {
   let logoutObj = responseObj;
   console.log("logoutAjaxHandler: ");
   console.log(logoutObj);
+  location.reload();
 }
 
 

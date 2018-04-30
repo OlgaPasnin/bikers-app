@@ -210,7 +210,7 @@ app.post('/login', function(req, res){
 
 app.get('/login', function(req,res){
   var loginObj = {};
-  console.log("Login session checking  for user: " + req.session.email);
+  console.log("Login session checking for user: " + req.session.email);
   if(req.session.email){
     loginObj.email = req.session.email;
     console.log("Reporting the following session exists: " + loginObj.email);
@@ -290,6 +290,8 @@ app.post('/checkin', function(req, res){
           //use schema.create to insert data into the db
           if (req.session.email){
             locationData.locationMembers.push(req.session.email)
+            console.log("Checkin creation object: ");
+            console.log(locationData);
             LocationName.create(locationData, function (err, clan) {
                 if (err) return res.status(500).send(err);
                 return res.sendStatus(201);
