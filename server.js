@@ -113,10 +113,12 @@ UserSchema.pre('validate', function(next) {
 
     // generate a salt
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        console.log("Gen salt err: " + err)
         if (err) return next(err);
 
         // hash the password using our new salt
         bcrypt.hash(user.password, salt, function(err, hash) {
+            console.log("Gen hash err: " + err)
             if (err) return next(err);
 
             // override the cleartext password with the hashed one
@@ -162,7 +164,7 @@ app.post('/register', function(req, res){
     User.create(userData, function (err, user) {
         if (err) return res.status(500).send(err);
         console.log("Saved password is " + user.password)
-        res.sendStatus(201);
+        return res.sendStatus(201);
     });
   }
   else {
