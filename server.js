@@ -108,6 +108,7 @@ var LocationSchema = new Schema({
 });
 
 UserSchema.pre('create', function(next) {
+    console.log("Generating password hash for user: " + user.email);
     var user = this;
 
     // generate a salt
@@ -120,6 +121,7 @@ UserSchema.pre('create', function(next) {
 
             // override the cleartext password with the hashed one
             user.password = hash;
+            console.log("Generated hash is: " + user.password);
             next();
         });
     });
@@ -190,7 +192,7 @@ app.post('/login', function(req, res){
             console.log("Created session entry: " + req.session.email);
             res.sendStatus(200);
           } else {
-            return res.sendStatus(403);
+            return res.sendStatus(401);
           }
         })
     });
@@ -202,8 +204,10 @@ app.post('/login', function(req, res){
 
 app.get('/login', function(req,res){
   let loginObj = {};
+  console.log("Login session checking  for user: " + req.session.email);
   if(req.session.email){
     loginObj.email = req.session.email;
+    console.log("Reporting the following session exists: " + loginObj.email);
     res.json(loginObj);
   }
   else{
