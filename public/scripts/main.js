@@ -19,7 +19,7 @@ let logoutBtn;
 
 const mainDivDefault = mainDiv;
 const logoutBtnHTML = '<button id="logoutBtn">Logout</button>'
-const registerBtnHTML = '<button id="registerBtn">Login / Register</button>'
+const registerBtnHTML = '<button class="btn" id="registerBtn">Login / Register</button>'
 let handleBarContext = {
   placeName: "empty"
 }
@@ -35,6 +35,7 @@ let isUpdate = false;
 
 let checkingBtnAjaxHandler = () => {
   console.log("CHECKING AJAX: Done");
+  
 }
 
 let loginCheckAjaxHandler = (responseObj) => {

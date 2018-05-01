@@ -1,0 +1,42 @@
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #333;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #333;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #333;
+}
+
+body {
+  background: url("../images/moto.jpeg") 0 0 no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+h1, h2, h3 {
+  text-align: center;
+}
+h6{
+  margin-top: 30px;
+}
+.btn {
+  margin-bottom: 20px;
+}
+.login-reg {
+  float: right;
+  margin-top: 20px;
+}
+
+.inner {
+  background: rgba(255,255,255,.8);
+  padding: 50px;
+}
+
+.login-container,
+.register-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
