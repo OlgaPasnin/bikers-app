@@ -26,9 +26,7 @@ let handleBarContext = {
 let isLoggedIn = false;
 let loggedInEmail = "";
 
-addCheckinListener();
 
-setIsLoggedInAjaxCall();
 
 let setIsLoggedInAjaxCall = () => {
   ajaxCall("GET", loginURL, loginCheckAjaxHandler);
@@ -201,3 +199,7 @@ let ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
     xmlhttp.send();
   }
 }
+
+addCheckinListener();
+
+setIsLoggedInAjaxCall();
