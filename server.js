@@ -238,10 +238,8 @@ app.get('/logout',function(req,res){
         });
       }
       req.session = null;
+      return res.sendStatus(200);
     });
-
-
-    return res.sendStatus(200);
 });
 
 

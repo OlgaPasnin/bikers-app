@@ -155,8 +155,6 @@ let logoutAjaxHandler = (responseObj) => {
   let logoutObj = responseObj;
   console.log("logoutAjaxHandler: ");
   console.log(logoutObj);
-  isLoggedIn = false;
-  loggedInEmail = "";
   location.reload();
 }
 
