@@ -226,6 +226,20 @@ app.get('/login', function(req,res){
 
 app.get('/logout',function(req,res){
     req.session = null;
+
+    var query = {};
+
+    LocationName.find(query, function(err, location){
+      if (err) return res.status(500).send(err);
+      if (location) {
+        location.forEach(function(item, index, object){
+          if(item.locationMembers.includes(req.session.email)){
+            object.splice(index, 1);
+          }
+        });
+      }
+    });
+
     return res.sendStatus(200);
 });
 

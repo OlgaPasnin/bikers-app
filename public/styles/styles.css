@@ -25,7 +25,10 @@ h6{
 .username {
   color: #fff;
   font-weight: bold;
-  text-transform: uppercase
+  text-transform: uppercase;
+  position: absolute;
+  right: 200px;
+  top: 28px;
 }
 .btn {
   margin-bottom: 20px;
@@ -33,6 +36,7 @@ h6{
 .login-reg {
   float: right;
   margin-top: 20px;
+  position: relative ;
 }
 
 .inner {
