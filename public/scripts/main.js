@@ -1,4 +1,3 @@
-
 let backendURL = "https://bikers-app.herokuapp.com/";
 // let backendURL = "localhost:3000/"
 let checkinURL = backendURL + "checkin";
@@ -18,7 +17,7 @@ let loginSubmitBtn;
 let logoutBtn;
 
 const mainDivDefault = mainDiv;
-const logoutBtnHTML = '<button id="logoutBtn">Logout</button>'
+const logoutBtnHTML = '<button id="logoutBtn" class="btn">Logout</button>'
 const registerBtnHTML = '<button class="btn" id="registerBtn">Login / Register</button>'
 let handleBarContext = {
   placeName: "empty"
@@ -27,15 +26,12 @@ let handleBarContext = {
 let isLoggedIn = false;
 let loggedInEmail = "";
 
+addCheckinListener();
 
-// var clearForm = function(){dressForm.reset();}
+setIsLoggedInAjaxCall();
 
-let isUpdate = false;
-
-
-let checkingBtnAjaxHandler = () => {
-  console.log("CHECKING AJAX: Done");
-  
+let setIsLoggedInAjaxCall = () => {
+  ajaxCall("GET", loginURL, loginCheckAjaxHandler);
 }
 
 let loginCheckAjaxHandler = (responseObj) => {
@@ -51,68 +47,10 @@ let loginCheckAjaxHandler = (responseObj) => {
   }
 }
 
-let regsiterAjaxHandler = (responseObj) => {
-  //let registerObj = JSON.parse(responseObj)
-  let registerObj = responseObj;
-  console.log("regsiterAjaxHandler: ");
-  console.log(registerObj);
-  location.reload();
-}
-
-let loginAjaxHandler = (responseObj) => {
-  //let registerObj = JSON.parse(responseObj)
-  let loginObj = responseObj;
-  console.log("loginAjaxHandler: ");
-  console.log(loginObj);
-  location.reload();
-}
-
-let logoutAjaxHandler = (responseObj) => {
-  //let registerObj = JSON.parse(responseObj)
-  let logoutObj = responseObj;
-  console.log("logoutAjaxHandler: ");
-  console.log(logoutObj);
-  location.reload();
-}
-
-
-let addCheckinListener = () => {
-  checkinBtn = document.getElementById("checkinBtn");
-  checkinBtn.addEventListener('click', function (e) {
-    let checkinData = {
-      locationId: placeID,
-      locationName: place.name
-    };
-    console.log("Location to checkin:");
-    console.log(checkinData);
-    ajaxCall("POST", checkinURL, checkingBtnAjaxHandler, checkinData)
-  });
-}
-
-let addLogoutListener = () => {
-  logoutBtn = document.getElementById("logoutBtn");
-  logoutBtn.addEventListener('click', function (e) {
-    ajaxCall("GET", logoutURL, logoutAjaxHandler)
-  });
-}
-
-
-let setIsLoggedInAjaxCall = () => {
-  ajaxCall("GET", loginURL, loginCheckAjaxHandler);
-}
-
-let registerAjaxCall = (regRequestObj) => {
-  ajaxCall("POST", registerURL, regsiterAjaxHandler, regRequestObj);
-}
-
-let loginAjaxCall = (loginRequestObj) => {
-  ajaxCall("POST", loginURL, loginAjaxHandler, loginRequestObj);
-}
-
 let updateLoginRegSection = () => {
   console.log("isLoggedIn: " + isLoggedIn);
   if (isLoggedIn){
-    const logoutHTML = "<span>" + loggedInEmail + "</span>" + logoutBtnHTML;
+    const logoutHTML = "<span class='username' >" + loggedInEmail + "</span>" + logoutBtnHTML;
     $("#login-reg").html(logoutHTML);
     addLogoutListener();
   }
@@ -125,6 +63,7 @@ let updateLoginRegSection = () => {
   }
 }
 
+/// SHOW REGISTER AND LOGIN FORMS
 let showRegisterScreen = () => {
   let handleBarsRegisterTemplate = Handlebars.compile(handleBarRegisterSource);
   let handleBarRegisterHtml = handleBarsRegisterTemplate(handleBarsRegisterTemplate);
@@ -148,6 +87,7 @@ let showRegisterScreen = () => {
 
   loginSubmitBtn.addEventListener('click', function (e) {
     let loginRequestObj = {}
+
     let loginInput = document.getElementsByClassName("loginInput");
     console.log("Input elemnts are: ");
     console.log(loginInput);
@@ -163,6 +103,64 @@ let showRegisterScreen = () => {
 
 }
 
+let registerAjaxCall = (regRequestObj) => {
+  ajaxCall("POST", registerURL, regsiterAjaxHandler, regRequestObj);
+}
+
+let regsiterAjaxHandler = (responseObj) => {
+  //let registerObj = JSON.parse(responseObj)
+  let registerObj = responseObj;
+  console.log("regsiterAjaxHandler: ");
+  console.log(registerObj);
+  location.reload();
+}
+
+
+let loginAjaxCall = (loginRequestObj) => {
+  ajaxCall("POST", loginURL, loginAjaxHandler, loginRequestObj);
+}
+
+let loginAjaxHandler = (responseObj) => {
+  //let registerObj = JSON.parse(responseObj)
+  let loginObj = responseObj;
+  console.log("loginAjaxHandler: ");
+  console.log(loginObj);
+  location.reload();
+}
+
+let addCheckinListener = () => {
+  checkinBtn = document.getElementById("checkinBtn");
+  checkinBtn.addEventListener('click', function (e) {
+    let checkinData = {
+      locationId: placeID,
+      locationName: place.name
+    };
+    console.log("Location to checkin:");
+    console.log(checkinData);
+    ajaxCall("POST", checkinURL, checkingBtnAjaxHandler, checkinData)
+  });
+}
+
+let checkingBtnAjaxHandler = () => {
+  console.log("CHECKIN AJAX: Done");
+}
+
+let addLogoutListener = () => {
+  logoutBtn = document.getElementById("logoutBtn");
+  logoutBtn.addEventListener('click', function (e) {
+    ajaxCall("GET", logoutURL, logoutAjaxHandler)
+  });
+}
+
+let logoutAjaxHandler = (responseObj) => {
+  //let registerObj = JSON.parse(responseObj)
+  let logoutObj = responseObj;
+  console.log("logoutAjaxHandler: ");
+  console.log(logoutObj);
+  location.reload();
+}
+
+/// SHOW MAIN PAGE WITH MAP
 let reinitializeMainPage = () => {
   $("#mainDiv").html(mainDivDefault);
   initMap(defaultZoom, locationEngland);
@@ -172,6 +170,7 @@ let reinitializeMainPage = () => {
   setIsLoggedInAjaxCall();
 }
 
+// This function allows to send AJAX calls to servers
 let ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
   let xmlhttp = new XMLHttpRequest();
 
@@ -202,6 +201,3 @@ let ajaxCall = function(ajaxMethod, ajaxURL, ajaxHandlerFunction, ajaxData){
     xmlhttp.send();
   }
 }
-
-addCheckinListener();
-setIsLoggedInAjaxCall();

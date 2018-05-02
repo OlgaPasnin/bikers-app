@@ -285,6 +285,7 @@ app.post('/checkin', function(req, res){
             //   return res.sendStatus(200);
             // })
             location.save();
+            return res.sendStatus(200);
           } else {
             console.log("CHECKIN: User not authenticated.")
             return res.sendStatus(403);

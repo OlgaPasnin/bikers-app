@@ -11,9 +11,10 @@ let marker;
 let placeID;
 let place;
 
+// When Click event is detected on the SEARCH button
+// this function is executed
 let searchMapsBtnEventHandler = () => {
 
-    console.log("Click!")
     // Clear all previous markers
     if(marker){
       marker.setMap(null);
@@ -41,12 +42,14 @@ let searchMapsBtnEventHandler = () => {
 
 }
 
+// Add listener for the SEARCH button
 let searchMapsBtnAddListener = () => {
   console.log("Adding searchMapsBtn Listener.");
   searchMapsBtn  = document.getElementById("searchMapsBtn");
   searchMapsBtn.addEventListener('click', searchMapsBtnEventHandler);
 }
 
+// Remove listener for the SEARCH button
 let searchMapsBtnRemoveListener = () => {
   console.log("Remove searchMapsBtn Listener.");
   searchMapsBtn  = document.getElementById("searchMapsBtn");
@@ -55,6 +58,7 @@ let searchMapsBtnRemoveListener = () => {
 
 searchMapsBtnAddListener();
 
+// Draw RED Marker on the MAPS
 let createMarker = (place) => {
   let placeLoc = place.geometry.location;
   marker = new google.maps.Marker({
@@ -62,6 +66,8 @@ let createMarker = (place) => {
     position: place.geometry.location
   });
 
+  // When clicking the the Marker, show a popup info window,
+  // and with handlebar, show the place name above the chekin button
   google.maps.event.addListener(marker, 'click', function() {
     infoWindow.setContent(place.name);
     handleBarContext.placeName = place.name
@@ -73,7 +79,7 @@ let createMarker = (place) => {
 };
 
 
-
+// Draw the Map from google maps (Define the function)
 let initMap = (zoomVal, centerLocation) => {
   map = new google.maps.Map(document.getElementById('map'), {
     center: centerLocation,
