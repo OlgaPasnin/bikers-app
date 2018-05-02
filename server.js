@@ -233,12 +233,12 @@ app.get('/logout',function(req,res){
       if (location) {
         console.log(location);
         location.forEach(function(item, index, object){
-          console.log(location);
-          console.log(location.locationMembers);
+          console.log(item);
+          console.log(item.locationMembers);
           if(item.locationMembers.includes(req.session.email)){
             object.splice(index, 1);
           }
-          console.log(location.locationMembers);
+          console.log(item.locationMembers);
         });
       }
       req.session = null;
