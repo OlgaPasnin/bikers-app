@@ -227,7 +227,7 @@ app.get('/login', function(req,res){
 app.get('/logout',function(req,res){
 
     var query = {};
-
+    console.log("User to log out: " + req.session.email)
     LocationName.find(query, function(err, location){
       if (err) return res.status(500).send(err);
       if (location) {
@@ -237,9 +237,10 @@ app.get('/logout',function(req,res){
           }
         });
       }
+      req.session = null;
     });
 
-    req.session = null;
+
     return res.sendStatus(200);
 });
 
