@@ -225,7 +225,6 @@ app.get('/login', function(req,res){
 })
 
 app.get('/logout',function(req,res){
-    req.session = null;
 
     var query = {};
 
@@ -240,6 +239,7 @@ app.get('/logout',function(req,res){
       }
     });
 
+    req.session = null;
     return res.sendStatus(200);
 });
 
