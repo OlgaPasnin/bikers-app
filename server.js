@@ -231,10 +231,14 @@ app.get('/logout',function(req,res){
     LocationName.find(query, function(err, location){
       if (err) return res.status(500).send(err);
       if (location) {
+        console.log(location);
         location.forEach(function(item, index, object){
+          console.log(location);
+          console.log(location.locationMembers);
           if(item.locationMembers.includes(req.session.email)){
             object.splice(index, 1);
           }
+          console.log(location.locationMembers);
         });
       }
       req.session = null;
