@@ -98,7 +98,6 @@ var LocationSchema = new Schema({
   },
   locationMembers: {
     type: Array,
-    unique: false,
     required: false
   },
   locationId: {
