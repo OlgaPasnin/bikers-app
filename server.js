@@ -232,13 +232,15 @@ app.get('/logout',function(req,res){
       if (err) return res.status(500).send(err);
       if (location) {
         console.log(location);
-        location.forEach(function(item, index, object){
-          console.log(item);
-          console.log(item.locationMembers);
-          if(item.locationMembers.includes(req.session.email)){
-            object.splice(index, 1);
-          }
-          console.log(item.locationMembers);
+        location.forEach(function(locationItem){
+          console.log(locationItem);
+          console.log(locationItem.locationMembers);
+          locationItem.locationMembers.forEach(function(locationMembersItem, index, object){
+            if(locationMembersItem.includes(req.session.email)){
+              object.splice(index, 1);
+            }
+          });
+          console.log(locationItem.locationMembers);
         });
       }
       req.session = null;
