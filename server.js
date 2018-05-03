@@ -228,11 +228,11 @@ app.get('/logout',function(req,res){
 
     var query = {};
     console.log("User to log out: " + req.session.email)
-    LocationName.find(query, function(err, location){
+    LocationName.find(query, function(err, locations){
       if (err) return res.status(500).send(err);
-      if (location) {
-        console.log(location);
-        location.forEach(function(locationItem){
+      if (locations) {
+        console.log(locations);
+        locations.forEach(function(locationItem){
           console.log(locationItem);
           console.log(locationItem.locationMembers);
           locationItem.locationMembers.forEach(function(locationMembersItem, index, object){
