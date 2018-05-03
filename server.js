@@ -241,9 +241,10 @@ app.get('/logout',function(req,res){
             }
           });
           console.log(locationItem.locationMembers);
+          locationItem.save();
         });
       }
-      location.save();
+
       req.session = null;
       return res.sendStatus(200);
     });
