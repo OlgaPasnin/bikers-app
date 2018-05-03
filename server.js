@@ -238,6 +238,7 @@ app.get('/logout',function(req,res){
           locationItem.locationMembers.forEach(function(locationMembersItem, index, object){
             if(locationMembersItem.includes(req.session.email)){
               object.splice(index, 1);
+              location.save();
             }
           });
           console.log(locationItem.locationMembers);
